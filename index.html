@@ -10,113 +10,787 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" type="image/svg+xml" href="/icon.svg">
 <link rel="apple-touch-icon" href="/icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{overflow:hidden;font-family:Segoe UI,sans-serif;height:100vh;height:100dvh;width:100vw;position:relative;background:#87CEEB;-webkit-tap-highlight-color:transparent;user-select:none;cursor:default}
-.sky{position:fixed;inset:0;background:linear-gradient(#87CEEB,#E0F7FA);transition:background 2s;z-index:1}
-.city{position:fixed;bottom:0;left:0;width:100%;height:55%;z-index:2;pointer-events:none}
-.city svg{width:100%;height:100%;display:block}
-.tc{position:fixed;top:12%;left:50%;transform:translateX(-50%);text-align:center;z-index:10;background:rgba(0,0,0,.65);padding:18px 36px;border-radius:20px;backdrop-filter:blur(6px);box-shadow:0 10px 30px rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.15)}
-.tl{font-size:15px;color:#ddd;margin-bottom:8px;text-transform:uppercase;letter-spacing:2px}
-.tm{font-size:60px;font-weight:700;color:#fff;font-family:Courier New,monospace;text-shadow:0 0 20px rgba(255,255,255,.4);line-height:1;font-variant-numeric:tabular-nums}
-.wk{position:fixed;bottom:3%;left:0;width:clamp(100px,15vw,150px);height:auto;z-index:5;transition:left .9s linear;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
-.wk svg{width:100%;height:auto;display:block}
-.sm{position:fixed;bottom:52%;left:15%;width:20px;height:20px;background:rgba(200,200,200,.55);border-radius:50%;animation:s 4s infinite ease-out;z-index:3}
-.sm:nth-child(2){left:45%;animation-delay:1s;width:25px;height:25px}
-.sm:nth-child(3){left:75%;animation-delay:2s;width:15px;height:15px}
-@keyframes s{0%{transform:translateY(0) scale(1);opacity:.6}100%{transform:translateY(-150px) scale(3);opacity:0}}
-@media(max-width:768px){.tm{font-size:44px}.tc{padding:14px 26px;top:8%}.tl{font-size:13px}}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary: #4a6fa5;
+    --primary-dark: #2d3748;
+    --secondary: #f5cba7;
+    --accent: #f1c40f;
+    --text-light: #ffffff;
+    --text-dark: #1a202c;
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --shadow-glow: 0 0 30px rgba(74, 111, 165, 0.5);
+  }
+
+  body {
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    height: 100vh;
+    height: 100dvh;
+    width: 100vw;
+    position: relative;
+    background: linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #4a6fa5 100%);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    cursor: default;
+    color: var(--text-light);
+  }
+
+  /* Animated Background */
+  .sky {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #4a6fa5 100%);
+    transition: background 3s ease;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .sky::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  }
+
+  .stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 4s infinite ease-in-out;
+    opacity: 0.6;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* Cityscape - Improved */
+  .city {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .city svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Floating particles - Enhanced */
+  .smoke {
+    position: fixed;
+    bottom: 50%;
+    left: 15%;
+    width: 16px;
+    height: 16px;
+    background: rgba(200, 200, 200, 0.45);
+    border-radius: 50%;
+    animation: smokeRise 5s infinite ease-out;
+    z-index: 3;
+    filter: blur(2px);
+  }
+
+  .smoke:nth-child(2) {
+    left: 45%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 1.5s;
+    background: rgba(200, 200, 200, 0.55);
+  }
+
+  .smoke:nth-child(3) {
+    left: 75%;
+    width: 12px;
+    height: 12px;
+    animation-delay: 2.5s;
+    background: rgba(200, 200, 200, 0.4);
+  }
+
+  .smoke:nth-child(4) {
+    left: 30%;
+    width: 18px;
+    height: 18px;
+    animation-delay: 0.8s;
+    background: rgba(200, 200, 200, 0.5);
+  }
+
+  .smoke:nth-child(5) {
+    left: 60%;
+    width: 14px;
+    height: 14px;
+    animation-delay: 2s;
+    background: rgba(200, 200, 200, 0.45);
+  }
+
+  @keyframes smokeRise {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-200px) scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  /* Timer Container - Modern Glassmorphism */
+  .timer-container {
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 28px 48px;
+    border-radius: 24px;
+    box-shadow: 
+      0 20px 60px rgba(0, 0, 0, 0.3),
+      var(--shadow-glow);
+    border: 1px solid var(--glass-border);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 280px;
+  }
+
+  .timer-container:hover {
+    transform: translateX(-50%) translateY(-5px);
+    box-shadow: 
+      0 25px 80px rgba(0, 0, 0, 0.4),
+      0 0 40px rgba(74, 111, 165, 0.6);
+  }
+
+  .timer-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .timer-display {
+    font-size: 72px;
+    font-weight: 800;
+    color: var(--text-light);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -2px;
+  }
+
+  /* Progress Bar */
+  .progress-container {
+    position: fixed;
+    top: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 500px;
+    z-index: 9;
+    opacity: 0.8;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--secondary), var(--primary));
+    border-radius: 2px;
+    transition: width 0.5s ease-out;
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.5);
+  }
+
+  /* Date Display */
+  .date-container {
+    position: fixed;
+    top: 32%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 8;
+    opacity: 0.7;
+  }
+
+  .date-text {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  /* Worker - Enhanced */
+  .worker {
+    position: fixed;
+    bottom: 3%;
+    left: 0;
+    width: clamp(100px, 15vw, 150px);
+    height: auto;
+    z-index: 5;
+    transition: left 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+  }
+
+  .worker svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Status Indicator */
+  .status-indicator {
+    position: fixed;
+    top: 8%;
+    right: 5%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #4caf50;
+    z-index: 20;
+    box-shadow: 0 0 15px #4caf50;
+    animation: pulse 2s infinite;
+  }
+
+  .status-indicator.paused {
+    background: #f44336;
+    box-shadow: 0 0 15px #f44336;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+  }
+
+  /* Current Time */
+  .current-time {
+    position: fixed;
+    top: 8%;
+    left: 5%;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 400;
+    z-index: 20;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .timer-display {
+      font-size: 48px;
+    }
+    
+    .timer-container {
+      padding: 20px 36px;
+      top: 12%;
+      min-width: 240px;
+    }
+    
+    .timer-label {
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    
+    .progress-container {
+      top: 25%;
+      width: 90%;
+    }
+    
+    .date-container {
+      top: 29%;
+    }
+    
+    .date-text {
+      font-size: 12px;
+    }
+    
+    .current-time {
+      font-size: 11px;
+      left: 3%;
+    }
+    
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      top: 6%;
+      right: 4%;
+    }
+    
+    .city {
+      height: 45%;
+    }
+    
+    .worker {
+      bottom: 2%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .timer-display {
+      font-size: 36px;
+    }
+    
+    .timer-container {
+      padding: 16px 28px;
+      top: 10%;
+      min-width: 200px;
+    }
+    
+    .progress-container {
+      top: 22%;
+      width: 95%;
+    }
+    
+    .date-container {
+      top: 26%;
+    }
+    
+    .date-text {
+      font-size: 10px;
+    }
+  }
+
+  /* Loading Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .timer-container,
+  .progress-container,
+  .date-container,
+  .current-time,
+  .status-indicator {
+    animation: fadeIn 0.8s ease-out;
+  }
 </style>
 </head>
 <body>
-<div class="sky" id="sky"></div>
-<div class="sm"></div><div class="sm"></div><div class="sm"></div>
+  <div class="sky" id="sky"></div>
+  <div class="stars" id="stars"></div>
+  
+  <!-- Floating smoke particles -->
+  <div class="smoke"></div>
+  <div class="smoke"></div>
+  <div class="smoke"></div>
+  <div class="smoke"></div>
+  <div class="smoke"></div>
 
-<div class="city"><svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice">
-<rect x="50" y="200" width="120" height="200" fill="#4a5568"/>
-<rect x="200" y="150" width="100" height="250" fill="#2d3748"/>
-<rect x="350" y="180" width="140" height="220" fill="#4a5568"/>
-<rect x="550" y="120" width="90" height="280" fill="#2d3748"/>
-<rect x="700" y="160" width="130" height="240" fill="#4a5568"/>
-<rect x="880" y="190" width="110" height="210" fill="#2d3748"/>
-<rect x="1050" y="140" width="100" height="260" fill="#4a5568"/>
-<rect x="120" y="120" width="20" height="80" fill="#718096"/>
-<rect x="380" y="100" width="25" height="80" fill="#718096"/>
-<rect x="740" y="80" width="20" height="80" fill="#718096"/>
-<rect x="1080" y="90" width="25" height="50" fill="#718096"/>
-<rect x="70" y="230" width="15" height="15" fill="#f6e05e" opacity=".8"/>
-<rect x="100" y="230" width="15" height="15" fill="#f6e05e" opacity=".6"/>
-<rect x="220" y="180" width="15" height="15" fill="#f6e05e" opacity=".7"/>
-<rect x="250" y="180" width="15" height="15" fill="#f6e05e" opacity=".5"/>
-<rect x="380" y="220" width="15" height="15" fill="#f6e05e" opacity=".8"/>
-<rect x="410" y="220" width="15" height="15" fill="#f6e05e" opacity=".6"/>
-<rect x="570" y="160" width="15" height="15" fill="#f6e05e" opacity=".7"/>
-<rect x="600" y="160" width="15" height="15" fill="#f6e05e" opacity=".5"/>
-<rect x="730" y="200" width="15" height="15" fill="#f6e05e" opacity=".8"/>
-<rect x="760" y="200" width="15" height="15" fill="#f6e05e" opacity=".6"/>
-<rect x="910" y="230" width="15" height="15" fill="#f6e05e" opacity=".7"/>
-<rect x="940" y="230" width="15" height="15" fill="#f6e05e" opacity=".5"/>
-<rect x="1080" y="180" width="15" height="15" fill="#f6e05e" opacity=".8"/>
-<rect x="1110" y="180" width="15" height="15" fill="#f6e05e" opacity=".6"/>
-</svg></div>
+  <!-- Enhanced Cityscape -->
+  <div class="city">
+    <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice">
+      <!-- Buildings with depth -->
+      <rect x="20" y="220" width="80" height="180" fill="#1a202c" rx="2"/>
+      <rect x="120" y="180" width="100" height="220" fill="#2d3748" rx="2"/>
+      <rect x="240" y="200" width="90" height="200" fill="#1a202c" rx="2"/>
+      <rect x="350" y="150" width="110" height="250" fill="#2d3748" rx="2"/>
+      <rect x="480" y="170" width="120" height="230" fill="#1a202c" rx="2"/>
+      <rect x="620" y="130" width="100" height="270" fill="#2d3748" rx="2"/>
+      <rect x="740" y="190" width="80" height="210" fill="#1a202c" rx="2"/>
+      <rect x="840" y="160" width="130" height="240" fill="#2d3748" rx="2"/>
+      <rect x="1000" y="140" width="90" height="260" fill="#1a202c" rx="2"/>
+      
+      <!-- Windows with variation -->
+      <rect x="40" y="240" width="8" height="8" fill="#f5cba7" opacity="0.8" rx="1"/>
+      <rect x="55" y="240" width="8" height="8" fill="#f5cba7" opacity="0.6" rx="1"/>
+      <rect x="40" y="260" width="8" height="8" fill="#f5cba7" opacity="0.7" rx="1"/>
+      <rect x="55" y="260" width="8" height="8" fill="#f5cba7" opacity="0.5" rx="1"/>
+      
+      <rect x="140" y="200" width="8" height="8" fill="#f1c40f" opacity="0.9" rx="1"/>
+      <rect x="155" y="200" width="8" height="8" fill="#f1c40f" opacity="0.7" rx="1"/>
+      <rect x="140" y="220" width="8" height="8" fill="#f1c40f" opacity="0.8" rx="1"/>
+      <rect x="155" y="220" width="8" height="8" fill="#f1c40f" opacity="0.6" rx="1"/>
+      
+      <rect x="370" y="170" width="8" height="8" fill="#4caf50" opacity="0.8" rx="1"/>
+      <rect x="385" y="170" width="8" height="8" fill="#4caf50" opacity="0.6" rx="1"/>
+      <rect x="370" y="190" width="8" height="8" fill="#4caf50" opacity="0.9" rx="1"/>
+      
+      <rect x="640" y="150" width="8" height="8" fill="#e74c3c" opacity="0.8" rx="1"/>
+      <rect x="655" y="150" width="8" height="8" fill="#e74c3c" opacity="0.6" rx="1"/>
+      <rect x="640" y="170" width="8" height="8" fill="#e74c3c" opacity="0.7" rx="1"/>
+      
+      <rect x="860" y="180" width="8" height="8" fill="#3498db" opacity="0.8" rx="1"/>
+      <rect x="875" y="180" width="8" height="8" fill="#3498db" opacity="0.6" rx="1"/>
+      <rect x="860" y="200" width="8" height="8" fill="#3498db" opacity="0.9" rx="1"/>
+      
+      <rect x="1020" y="160" width="8" height="8" fill="#9b59b6" opacity="0.8" rx="1"/>
+      <rect x="1035" y="160" width="8" height="8" fill="#9b59b6" opacity="0.6" rx="1"/>
+      <rect x="1020" y="180" width="8" height="8" fill="#9b59b6" opacity="0.7" rx="1"/>
+      
+      <!-- Building details -->
+      <rect x="30" y="235" width="10" height="20" fill="#3a5a8a" rx="1"/>
+      <rect x="130" y="195" width="10" height="20" fill="#3a5a8a" rx="1"/>
+      <rect x="630" y="165" width="10" height="20" fill="#3a5a8a" rx="1"/>
+      
+      <!-- Street lights -->
+      <rect x="200" y="350" width="4" height="50" fill="#4a5568" rx="2"/>
+      <circle cx="202" cy="345" r="3" fill="#f1c40f" opacity="0.8"/>
+      
+      <rect x="500" y="350" width="4" height="50" fill="#4a5568" rx="2"/>
+      <circle cx="502" cy="345" r="3" fill="#f1c40f" opacity="0.8"/>
+      
+      <rect x="800" y="350" width="4" height="50" fill="#4a5568" rx="2"/>
+      <circle cx="802" cy="345" r="3" fill="#f1c40f" opacity="0.8"/>
+    </svg>
+  </div>
 
-<div class="tc"><div class="tl" id="timerLabel">До конца смены</div><div class="tm" id="timer">00:00:00</div></div>
+  <!-- Timer Container -->
+  <div class="timer-container">
+    <div class="timer-label" id="timerLabel">До конца смены</div>
+    <div class="timer-display" id="timer">00:00:00</div>
+  </div>
 
-<div class="wk" id="worker"><svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
-<ellipse cx="60" cy="196" rx="32" ry="4" fill="#000" opacity=".25"/>
-<rect x="42" y="150" width="15" height="42" fill="#2d3748" rx="4"/>
-<rect x="63" y="150" width="15" height="42" fill="#2d3748" rx="4"/>
-<path d="M35 188 Q42 186 55 188 L58 194 Q42 196 33 194 Z" fill="#1a202c"/>
-<path d="M62 188 Q75 186 82 188 L85 194 Q75 196 60 194 Z" fill="#1a202c"/>
-<path d="M36 92 Q60 84 84 92 L88 152 Q60 160 32 152 Z" fill="#4a6fa5"/>
-<rect x="42" y="86" width="8" height="22" fill="#3a5a8a" rx="1"/>
-<rect x="70" y="86" width="8" height="22" fill="#3a5a8a" rx="1"/>
-<circle cx="46" cy="108" r="2.5" fill="#f1c40f"/>
-<circle cx="74" cy="108" r="2.5" fill="#f1c40f"/>
-<rect x="52" y="118" width="16" height="14" fill="#3a5a8a" rx="2"/>
-<path d="M36 100 Q22 118 26 138" stroke="#4a6fa5" stroke-width="12" fill="none" stroke-linecap="round"/>
-<circle cx="26" cy="140" r="6" fill="#f5cba7"/>
-<rect x="14" y="135" width="18" height="16" fill="#e74c3c" rx="2"/>
-<path d="M32 139 Q40 142 32 148" stroke="#e74c3c" stroke-width="3" fill="none"/>
-<path d="M22 130 Q20 124 23 119" stroke="#ccc" stroke-width="1.5" fill="none" opacity=".7"/>
-<path d="M27 130 Q25 124 28 119" stroke="#ccc" stroke-width="1.5" fill="none" opacity=".5"/>
-<path d="M84 100 Q98 118 94 138" stroke="#4a6fa5" stroke-width="12" fill="none" stroke-linecap="round"/>
-<circle cx="94" cy="140" r="6" fill="#f5cba7"/>
-<rect x="54" y="76" width="12" height="12" fill="#f5cba7"/>
-<circle cx="60" cy="52" r="34" fill="#f5cba7"/>
-<ellipse cx="27" cy="52" rx="4" ry="6" fill="#e0a87a"/>
-<ellipse cx="93" cy="52" rx="4" ry="6" fill="#e0a87a"/>
-<path d="M34 30 Q42 34 48 30" stroke="#8b6f47" stroke-width="3" fill="none" stroke-linecap="round"/>
-<path d="M72 30 Q78 34 86 30" stroke="#8b6f47" stroke-width="3" fill="none" stroke-linecap="round"/>
-<path d="M24 32 Q60 2 96 32 L97 40 Q60 22 23 40 Z" fill="#f1c40f"/>
-<rect x="22" y="34" width="76" height="7" fill="#d4ac0d" rx="3"/>
-<ellipse cx="46" cy="50" rx="7" ry="8" fill="#fff"/>
-<ellipse cx="74" cy="50" rx="7" ry="8" fill="#fff"/>
-<circle cx="48" cy="51" r="3.5" fill="#1a202c"/>
-<circle cx="72" cy="51" r="3.5" fill="#1a202c"/>
-<circle cx="49" cy="49" r="1" fill="#fff"/>
-<circle cx="73" cy="49" r="1" fill="#fff"/>
-<path d="M38 40 Q46 38 54 42" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
-<path d="M66 42 Q74 38 82 40" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
-<ellipse cx="60" cy="65" rx="13" ry="10" fill="#e0a87a"/>
-<ellipse cx="56" cy="63" rx="2.5" ry="1.5" fill="#d19a6a" opacity=".6"/>
-<path d="M50 78 Q60 85 70 78" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
-<path d="M42 75 Q45 82 48 80" stroke="#8b6f47" stroke-width="1" fill="none" opacity=".4"/>
-<path d="M72 80 Q75 82 78 75" stroke="#8b6f47" stroke-width="1" fill="none" opacity=".4"/>
-</svg></div>
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- Date Display -->
+  <div class="date-container">
+    <div class="date-text" id="dateText"></div>
+  </div>
+
+  <!-- Current Time -->
+  <div class="current-time" id="currentTime"></div>
+
+  <!-- Status Indicator -->
+  <div class="status-indicator" id="statusIndicator"></div>
+
+  <!-- Enhanced Worker SVG -->
+  <div class="worker" id="worker">
+    <svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Shadow -->
+      <ellipse cx="60" cy="196" rx="32" ry="4" fill="#000000" opacity="0.25"/>
+      
+      <!-- Legs -->
+      <rect x="42" y="150" width="15" height="42" fill="#2d3748" rx="4"/>
+      <rect x="63" y="150" width="15" height="42" fill="#2d3748" rx="4"/>
+      
+      <!-- Shoes -->
+      <path d="M35 188 Q42 186 55 188 L58 194 Q42 196 33 194 Z" fill="#1a202c"/>
+      <path d="M62 188 Q75 186 82 188 L85 194 Q75 196 60 194 Z" fill="#1a202c"/>
+      
+      <!-- Body -->
+      <path d="M36 92 Q60 84 84 92 L88 152 Q60 160 32 152 Z" fill="#4a6fa5"/>
+      
+      <!-- Arm details -->
+      <rect x="42" y="86" width="8" height="22" fill="#3a5a8a" rx="1"/>
+      <rect x="70" y="86" width="8" height="22" fill="#3a5a8a" rx="1"/>
+      
+      <!-- Hands -->
+      <circle cx="46" cy="108" r="2.5" fill="#f1c40f"/>
+      <circle cx="74" cy="108" r="2.5" fill="#f1c40f"/>
+      
+      <!-- Belt -->
+      <rect x="52" y="118" width="16" height="14" fill="#3a5a8a" rx="2"/>
+      
+      <!-- Arms -->
+      <path d="M36 100 Q22 118 26 138" stroke="#4a6fa5" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <circle cx="26" cy="140" r="6" fill="#f5cba7"/>
+      <rect x="14" y="135" width="18" height="16" fill="#e74c3c" rx="2"/>
+      <path d="M32 139 Q40 142 32 148" stroke="#e74c3c" stroke-width="3" fill="none"/>
+      
+      <!-- Tool details -->
+      <path d="M22 130 Q20 124 23 119" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.7"/>
+      <path d="M27 130 Q25 124 28 119" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.5"/>
+      
+      <!-- Right arm -->
+      <path d="M84 100 Q98 118 94 138" stroke="#4a6fa5" stroke-width="12" fill="none" stroke-linecap="round"/>
+      <circle cx="94" cy="140" r="6" fill="#f5cba7"/>
+      <rect x="54" y="76" width="12" height="12" fill="#f5cba7"/>
+      
+      <!-- Head -->
+      <circle cx="60" cy="52" r="34" fill="#f5cba7"/>
+      
+      <!-- Ears -->
+      <ellipse cx="27" cy="52" rx="4" ry="6" fill="#e0a87a"/>
+      <ellipse cx="93" cy="52" rx="4" ry="6" fill="#e0a87a"/>
+      
+      <!-- Hair -->
+      <path d="M34 30 Q42 34 48 30" stroke="#8b6f47" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M72 30 Q78 34 86 30" stroke="#8b6f47" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M24 32 Q60 2 96 32 L97 40 Q60 22 23 40 Z" fill="#f1c40f"/>
+      
+      <!-- Hair band -->
+      <rect x="22" y="34" width="76" height="7" fill="#d4ac0d" rx="3"/>
+      
+      <!-- Eyes -->
+      <ellipse cx="46" cy="50" rx="7" ry="8" fill="#ffffff"/>
+      <ellipse cx="74" cy="50" rx="7" ry="8" fill="#ffffff"/>
+      <circle cx="48" cy="51" r="3.5" fill="#1a202c"/>
+      <circle cx="72" cy="51" r="3.5" fill="#1a202c"/>
+      <circle cx="49" cy="49" r="1" fill="#ffffff"/>
+      <circle cx="73" cy="49" r="1" fill="#ffffff"/>
+      
+      <!-- Eyebrows -->
+      <path d="M38 40 Q46 38 54 42" stroke="#333333" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M66 42 Q74 38 82 40" stroke="#333333" stroke-width="2" fill="none" stroke-linecap="round"/>
+      
+      <!-- Nose -->
+      <ellipse cx="60" cy="65" rx="13" ry="10" fill="#e0a87a"/>
+      <ellipse cx="56" cy="63" rx="2.5" ry="1.5" fill="#d19a6a" opacity="0.6"/>
+      
+      <!-- Mouth -->
+      <path d="M50 78 Q60 85 70 78" stroke="#333333" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M42 75 Q45 82 48 80" stroke="#8b6f47" stroke-width="1" fill="none" opacity="0.4"/>
+      <path d="M72 80 Q75 82 78 75" stroke="#8b6f47" stroke-width="1" fill="none" opacity="0.4"/>
+    </svg>
+  </div>
 
 <script>
-const START_DATE=new Date(2026,10,4,0,0,0),CYCLE=8,SHIFT_DAYS={0:{s:8,e:20},1:{s:8,e:20},4:{s:20,e:8,nd:true},5:{s:20,e:8,nd:true}},timerEl=document.getElementById('timer'),timerLabel=document.getElementById('timerLabel'),workerEl=document.getElementById('worker'),skyEl=document.getElementById('sky');
-function getCycleDayIndex(d){const m=new Date(d.getFullYear(),d.getMonth(),d.getDate()),diff=Math.floor((m-START_DATE)/864e5);return((diff%CYCLE)+CYCLE)%CYCLE}
-function getIntervals(idx,base){const si=SHIFT_DAYS[idx];if(!si)return[];const start=new Date(base);start.setHours(si.s,0,0,0);const end=new Date(base);if(si.nd)end.setDate(end.getDate()+1);end.setHours(si.e,0,0,0);return[{start,end}]}
-function getShiftInfo(now){const idx=getCycleDayIndex(now),tm=new Date(now.getFullYear(),now.getMonth(),now.getDate()),ints=[];for(let o=-2;o<=9;o++){const b=new Date(tm);b.setDate(b.getDate()+o);const i=((idx+o)%CYCLE+CYCLE)%CYCLE;ints.push(...getIntervals(i,b))}ints.sort((a,b)=>a.start-b.start);for(const it of ints){if(now>=it.start&&now<it.end)return{isActive:true,timeLeft:(it.end-now)/1000,progress:(now-it.start)/(it.end-it.start),label:'До конца смены'}}for(const it of ints){if(it.start>now)return{isActive:false,timeLeft:(it.start-now)/1000,progress:0,label:'До начала смены'}}return{isActive:false,timeLeft:0,progress:0,label:'До начала смены'}}
-function fmt(s){const h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=Math.floor(s%60);return`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`}
-function updWorker(p){const w=workerEl.offsetWidth,max=window.innerWidth-w;workerEl.style.left=Math.max(0,Math.min(max,p*max))+'px'}
-function updSky(h){let g;if(h>=6&&h<12)g='linear-gradient(#87CEEB,#FFB347)';else if(h>=12&&h<18)g='linear-gradient(#87CEEB,#E0F7FA)';else if(h>=18&&h<22)g='linear-gradient(#FF7E5F,#2C3E50)';else g='linear-gradient(#0B0B2B,#1B1B3A)';skyEl.style.background=g}
-function update(){const n=new Date(),i=getShiftInfo(n);timerEl.textContent=fmt(i.timeLeft);timerLabel.textContent=i.label;updWorker(i.progress);updSky(n.getHours())}
-update();setInterval(update,1000);
-window.addEventListener('resize',()=>{const i=getShiftInfo(new Date());updWorker(i.progress)});
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
+  // Configuration
+  const START_DATE = new Date(2026, 10, 4, 0, 0, 0);
+  const CYCLE = 8;
+  const SHIFT_DAYS = {
+    0: { s: 8, e: 20 },
+    1: { s: 8, e: 20 },
+    4: { s: 20, e: 8, nd: true },
+    5: { s: 20, e: 8, nd: true }
+  };
+
+  // DOM Elements
+  const timerEl = document.getElementById('timer');
+  const timerLabel = document.getElementById('timerLabel');
+  const workerEl = document.getElementById('worker');
+  const skyEl = document.getElementById('sky');
+  const progressFill = document.getElementById('progressFill');
+  const dateText = document.getElementById('dateText');
+  const currentTimeEl = document.getElementById('currentTime');
+  const statusIndicator = document.getElementById('statusIndicator');
+  const starsContainer = document.getElementById('stars');
+
+  // Create stars
+  function createStars() {
+    const starCount = 100;
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 60 + '%';
+      star.style.animationDelay = Math.random() * 4 + 's';
+      star.style.width = (Math.random() * 2 + 1) + 'px';
+      star.style.height = star.style.width;
+      star.style.opacity = Math.random() * 0.5 + 0.3;
+      starsContainer.appendChild(star);
+    }
+  }
+
+  // Get cycle day index
+  function getCycleDayIndex(d) {
+    const m = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const diff = Math.floor((m - START_DATE) / 864e5);
+    return ((diff % CYCLE) + CYCLE) % CYCLE;
+  }
+
+  // Get intervals for a specific day
+  function getIntervals(idx, base) {
+    const si = SHIFT_DAYS[idx];
+    if (!si) return [];
+    
+    const start = new Date(base);
+    start.setHours(si.s, 0, 0, 0);
+    
+    const end = new Date(base);
+    if (si.nd) end.setDate(end.getDate() + 1);
+    end.setHours(si.e, 0, 0, 0);
+    
+    return [{ start, end }];
+  }
+
+  // Get shift information
+  function getShiftInfo(now) {
+    const idx = getCycleDayIndex(now);
+    const tm = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const ints = [];
+
+    for (let o = -2; o <= 9; o++) {
+      const b = new Date(tm);
+      b.setDate(b.getDate() + o);
+      const i = ((idx + o) % CYCLE + CYCLE) % CYCLE;
+      ints.push(...getIntervals(i, b));
+    }
+
+    ints.sort((a, b) => a.start - b.start);
+
+    for (const it of ints) {
+      if (now >= it.start && now < it.end) {
+        return {
+          isActive: true,
+          timeLeft: (it.end - now) / 1000,
+          progress: (now - it.start) / (it.end - it.start),
+          label: 'До конца смены'
+        };
+      }
+    }
+
+    for (const it of ints) {
+      if (it.start > now) {
+        return {
+          isActive: false,
+          timeLeft: (it.start - now) / 1000,
+          progress: 0,
+          label: 'До начала смены'
+        };
+      }
+    }
+
+    return {
+      isActive: false,
+      timeLeft: 0,
+      progress: 0,
+      label: 'До начала смены'
+    };
+  }
+
+  // Format time
+  function fmt(s) {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor(s % 3600 / 60);
+    const sec = Math.floor(s % 60);
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  }
+
+  // Update worker position
+  function updWorker(p) {
+    const w = workerEl.offsetWidth;
+    const max = window.innerWidth - w;
+    workerEl.style.left = Math.max(0, Math.min(max, p * max)) + 'px';
+  }
+
+  // Update sky based on time
+  function updSky(h) {
+    let gradient;
+    
+    if (h >= 6 && h < 12) {
+      // Morning
+      gradient = 'linear-gradient(135deg, #1a237e 0%, #4a6fa5 50%, #87CEEB 100%)';
+    } else if (h >= 12 && h < 18) {
+      // Afternoon
+      gradient = 'linear-gradient(135deg, #4a6fa5 0%, #6ba3c8 50%, #87CEEB 100%)';
+    } else if (h >= 18 && h < 22) {
+      // Evening
+      gradient = 'linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #6a5acd 100%)';
+    } else {
+      // Night
+      gradient = 'linear-gradient(135deg, #0b0b2b 0%, #1a237e 50%, #2d3748 100%)';
+    }
+    
+    skyEl.style.background = gradient;
+    
+    // Adjust star visibility
+    const stars = starsContainer.querySelectorAll('.star');
+    if (h >= 6 && h < 20) {
+      stars.forEach(star => star.style.opacity = '0.1');
+    } else {
+      stars.forEach(star => star.style.opacity = Math.random() * 0.5 + 0.3 + '');
+    }
+  }
+
+  // Format date
+  function formatDate(date) {
+    const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+    const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+    
+    const dayName = days[date.getDay()];
+    const day = date.getDate();
+    const monthName = months[date.getMonth()];
+    const year = date.getFullYear();
+    
+    return `${dayName}, ${day} ${monthName} ${year}`;
+  }
+
+  // Format current time
+  function formatCurrentTime(date) {
+    return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // Main update function
+  function update() {
+    const now = new Date();
+    const info = getShiftInfo(now);
+    
+    // Update timer
+    timerEl.textContent = fmt(info.timeLeft);
+    timerLabel.textContent = info.label;
+    
+    // Update worker position
+    updWorker(info.progress);
+    
+    // Update progress bar
+    progressFill.style.width = (info.progress * 100) + '%';
+    
+    // Update sky
+    updSky(now.getHours());
+    
+    // Update date
+    dateText.textContent = formatDate(now);
+    
+    // Update current time
+    currentTimeEl.textContent = formatCurrentTime(now);
+    
+    // Update status indicator
+    if (info.isActive) {
+      statusIndicator.classList.remove('paused');
+    } else {
+      statusIndicator.classList.add('paused');
+    }
+  }
+
+  // Initialize
+  createStars();
+  update();
+  
+  // Update every second
+  setInterval(update, 1000);
+  
+  // Handle resize
+  window.addEventListener('resize', () => {
+    const info = getShiftInfo(new Date());
+    updWorker(info.progress);
+  });
+
+  // Service Worker registration
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+  }
 </script>
 </body>
 </html>
